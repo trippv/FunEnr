@@ -1,24 +1,17 @@
-#' @title TopGo enrichment for a gene list
-#' @description Function to perform enrichment analysis with TopGo for all ontologies.
-#' @param genelist Character vector of differentially expressed genes.
-#' @param background Data frame with two columns: gene names and GO IDs.
-#' @param ontology Ontology to use for analysis (default "BP").
-#' @param reduce_terms Logical, whether to reduce redundant GO terms (default FALSE).
-#' @param topnode number of nodes to report (default:30)
-#' @return Data frame with enrichment results.
+#' Perform GO Enrichment Analysis with topGO
+#'
+#' This function performs Gene Ontology (GO) enrichment analysis using the `topGO` package for all GO ontologies (BP, MF, CC). It can optionally reduce redundant GO terms.
+#'
+#' @param genelist A character vector of differentially expressed genes to be tested for enrichment.
+#' @param background A data frame with two columns: the first column contains gene names, and the second column contains corresponding GO IDs.
+#' @param ontology A character string specifying the ontology to use for analysis. Valid options are "BP" (Biological Process), "MF" (Molecular Function), and "CC" (Cellular Component). Defaults to "BP".
+#' @param reduce_terms Logical, whether to reduce redundant GO terms in the results. Defaults to `FALSE`.
+#' @param topnode An integer specifying the number of top GO terms (nodes) to report. Defaults to 30.
+#' @return A data frame containing the enrichment analysis results, including GO terms, p-values, and scores.
+#' @details This function uses the `topGO` package to perform the analysis. It takes a gene list, compares it against the background GO terms, and identifies enriched GO categories based on the given ontology.
+#' @export
 
-# Detect separator function
-detect_separator <- function(go_string) {
-  if (str_detect(go_string, ",")) {
-    return(",")
-  } else if (str_detect(go_string, ";")) {
-    return(";")
-  } else {
-    stop("No valid separator detected in GO terms")
-  }
-}
-
-enrich_Topgo <- function(genelist,
+FunEnr_Topgo <- function(genelist,
                          background,
                          ontology = "BP",
                          topnode = 30,
