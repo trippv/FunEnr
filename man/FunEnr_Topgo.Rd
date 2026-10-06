@@ -2,7 +2,7 @@
 % Please edit documentation in R/FunEnr_topgo.R
 \name{FunEnr_Topgo}
 \alias{FunEnr_Topgo}
-\title{Perform GO Enrichment Analysis with topGO}
+\title{Perform Gene Ontology enrichment analysis using topGO}
 \usage{
 FunEnr_Topgo(
   genelist,
@@ -13,22 +13,105 @@ FunEnr_Topgo(
 )
 }
 \arguments{
-\item{genelist}{A character vector of differentially expressed genes to be tested for enrichment.}
+\item{genelist}{A character vector containing the genes of interest,
+typically a set of differentially expressed genes.}
 
-\item{background}{A data frame with two columns: the first column contains gene names, and the second column contains corresponding GO IDs.}
+\item{background}{A data frame containing two columns representing
+a gene-to-GO annotation. One column must contain gene identifiers
+and the other GO identifiers. GO identifiers can be provided as
+comma- or semicolon-separated strings.}
 
-\item{ontology}{A character string specifying the ontology to use for analysis. Valid options are "BP" (Biological Process), "MF" (Molecular Function), and "CC" (Cellular Component). Defaults to "BP".}
+\item{ontology}{A character string specifying the GO ontology to
+analyze. One of \code{"BP"} (Biological Process), \code{"MF"} (Molecular
+Function), or \code{"CC"} (Cellular Component). Defaults to \code{"BP"}.}
 
-\item{topnode}{An integer specifying the number of top GO terms (nodes) to report. Defaults to 30.}
+\item{topnode}{Integer specifying the maximum number of GO terms
+returned by \code{\link[topGO]{GenTable}}. Defaults to 30.}
 
-\item{reduce_terms}{Logical, whether to reduce redundant GO terms in the results. Defaults to \code{FALSE}.}
+\item{reduce_terms}{Logical indicating whether redundant GO terms
+should be reduced using semantic similarity. Defaults to \code{FALSE}.}
 }
 \value{
-A data frame containing the enrichment analysis results, including GO terms, p-values, and scores.
+A data frame containing the GO enrichment results. The
+returned table includes GO identifiers, GO term descriptions,
+enrichment statistics, adjusted p-values, and the genes from the
+candidate list associated with each GO term.
 }
 \description{
-This function performs Gene Ontology (GO) enrichment analysis using the \code{topGO} package for all GO ontologies (BP, MF, CC). It can optionally reduce redundant GO terms.
+Performs Gene Ontology (GO) enrichment analysis using the
+\pkg{topGO} package. The function tests for enrichment of GO terms
+among a set of candidate genes relative to a user-provided
+gene-to-GO background annotation.
 }
 \details{
-This function uses the \code{topGO} package to perform the analysis. It takes a gene list, compares it against the background GO terms, and identifies enriched GO categories based on the given ontology.
+The analysis can be performed for Biological Process (BP),
+Molecular Function (MF), or Cellular Component (CC) ontologies.
+When requested, redundant GO terms can be reduced using semantic
+similarity with \pkg{rrvgo} and \pkg{GOSemSim}.
+
+The function first identifies the gene and GO columns in the
+supplied background annotation and automatically detects whether
+multiple GO identifiers are separated by commas or semicolons.
+
+Candidate genes are restricted to genes present in the supplied
+background annotation. A \pkg{topGO} data object is then constructed
+using the gene-to-GO mapping and enrichment is tested using the
+\code{weight01} algorithm with Fisher's exact test.
+
+P-values are adjusted for multiple testing using the Benjamini-Hochberg
+method.
+
+If \code{reduce_terms = TRUE}, semantically similar GO terms are evaluated
+using \pkg{GOSemSim} and redundant terms are reduced with
+\pkg{rrvgo}. Semantic similarity is calculated using the
+\pkg{org.Hs.eg.db} annotation database and is therefore based on
+Homo sapiens GO annotations.
+}
+\section{Input format}{
+
+The background annotation must contain exactly two columns. For
+example:
+
+\preformatted{
+gene        GO
+gene_001    GO:0008150,GO:0009987
+gene_002    GO:0003674
+gene_003    GO:0005575;GO:0008150
+}
+
+The order of the two columns is not important as long as one column
+contains GO identifiers beginning with \code{"GO:"}.
+}
+
+\examples{
+# Example gene-to-GO annotation
+background <- data.frame(
+  genes = c("gene1", "gene2", "gene3", "gene4", "gene5"),
+  GO = c(
+    "GO:0008150,GO:0009987",
+    "GO:0008150",
+    "GO:0003674,GO:0008150",
+    "GO:0009987",
+    "GO:0003674"
+  )
+)
+
+# Candidate genes
+genes <- c("gene1", "gene2")
+
+# Run enrichment analysis
+\dontrun{
+results <- FunEnr_Topgo(
+  genelist = genes,
+  background = background,
+  ontology = "BP"
+)
+}
+
+}
+\seealso{
+\code{\link[topGO]{topGOdata}},
+\code{\link[topGO]{runTest}},
+\code{\link[topGO]{GenTable}},
+\code{\link{detect_separator}}
 }

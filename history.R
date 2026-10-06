@@ -37,3 +37,11 @@ devtools::check()
 #### Actualziacion de DECRIPTION
 devtools::document()
 
+devtools::check()
+devtools::build_vignettes()
+
+## verificar el remoto
+gert::git_remote_list()
+gert::git_status()
+devtools::document()
+devtools::check()

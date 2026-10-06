@@ -1,13 +1,9 @@
 Package: FunEnr
-Title: Tools for Functional Enrichment Analysis
+Title: Tools for functional Enrichment (One Line, Title Case)
 Version: 0.0.0.9000
-Authors@R:
-    person(
-      "Miguel", "Tripp",
-      email = "TU_EMAIL",
-      role = c("aut", "cre"),
-      comment = c(ORCID = "TU-ORCID")
-    )
+Authors@R: 
+    person("Miguel", "Tripp", , "first.last@example.com", role = c("aut", "cre"),
+           comment = c(ORCID = "YOUR-ORCID-ID"))
 Description: Tools for Gene Ontology functional enrichment analysis
     using topGO, with utilities for preparing gene-to-GO annotations and
     reducing redundant GO terms.

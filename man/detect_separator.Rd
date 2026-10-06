@@ -2,28 +2,34 @@
 % Please edit documentation in R/detect_separator.R
 \name{detect_separator}
 \alias{detect_separator}
-\title{Detect the Separator in a GO Term String}
+\title{Detect the separator used between GO identifiers}
 \usage{
 detect_separator(go_string)
 }
 \arguments{
-\item{go_string}{A character string containing GO terms.}
+\item{go_string}{A character string containing one or more GO
+identifiers.}
 }
 \value{
-A character value indicating the detected separator (either \code{","} or \code{";"}).
+A character string containing the detected separator:
+\code{","} for comma-separated GO identifiers or \code{";"} for
+semicolon-separated GO identifiers.
 }
 \description{
-This function detects the separator used in a string of Gene Ontology (GO) terms. It checks whether the terms are separated by commas (\verb{,}), semicolons (\verb{;}), or if no valid separator is found.
+Detects whether multiple Gene Ontology (GO) identifiers in a
+character string are separated by commas or semicolons.
+}
+\details{
+The function searches for a comma first and then for a semicolon.
+If neither separator is present, the function returns an error.
 }
 \examples{
-# Example: GO terms separated by commas
 detect_separator("GO:0008150,GO:0003674,GO:0005575")
 
-# Example: GO terms separated by semicolons
 detect_separator("GO:0008150;GO:0003674;GO:0005575")
 
-# This will throw an error:
 \dontrun{
 detect_separator("GO:0008150 GO:0003674 GO:0005575")
 }
+
 }
