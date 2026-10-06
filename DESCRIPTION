@@ -1,19 +1,31 @@
 Package: FunEnr
-Title: Tools for functional Enrichment (One Line, Title Case)
+Title: Tools for Functional Enrichment Analysis
 Version: 0.0.0.9000
-Authors@R: 
-    person("Miguel", "Tripp", , "first.last@example.com", role = c("aut", "cre"),
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: Set of tools related to functional enrichment based on TopGO.
+Authors@R:
+    person(
+      "Miguel", "Tripp",
+      email = "TU_EMAIL",
+      role = c("aut", "cre"),
+      comment = c(ORCID = "TU-ORCID")
+    )
+Description: Tools for Gene Ontology functional enrichment analysis
+    using topGO, with utilities for preparing gene-to-GO annotations and
+    reducing redundant GO terms.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
 URL: https://github.com/trippv/FunEnr
 BugReports: https://github.com/trippv/FunEnr/issues
-Suggests: 
+Imports:
+    dplyr,
+    GOSemSim,
+    org.Hs.eg.db,
+    rrvgo,
+    stringr,
+    tidyr,
+    topGO
+Suggests:
     knitr,
     rmarkdown
 VignetteBuilder: knitr
-Imports: 
-    stringr
+Config/roxygen2/version: 8.0.0
